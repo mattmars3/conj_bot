@@ -1,0 +1,28 @@
+Modules
+    Get the person of the pronouns i.e. yo, usted, etc
+
+    Read json to hashmap and write hashmap to json
+
+    Web Handling
+        Navigate to website
+        Get Credentials
+            Store passwords in plaintext for absolute alpha security
+
+    Command line interface
+
+Ways of organizing
+    Create new json file & rules for each set
+        . means contains
+        - means ends in
+        word just means exact match word
+        er, ar, ir are special cases
+
+    Group verbs into categories and make 
+        U verbs
+        Boot verbs
+        ar, er, ir verbs
+
+        then make rules for each of them
+
+Features
+    Add feature of looking up in spanishdict
