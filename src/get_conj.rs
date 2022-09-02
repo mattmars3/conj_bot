@@ -1,7 +1,7 @@
 
 // this is where all the conjugation happens
 use serde::{Serialize, Deserialize};
-use crate::get_person::get_input;
+use crate::get_person::{get_input, Person};
 use std::fmt;
 
 
@@ -17,9 +17,25 @@ pub struct ConjugationRule {
     conjugations: Vec<String>,
 }
 
+impl ConjugationList {
+    pub fn unit() -> ConjugationList {
+        let v: Vec<ConjugationRule> = vec![];
+        ConjugationList {
+            set_name: String::from("Test"),
+            conj_map: v,
+        }
+    }
+    pub fn new(set_name: String, conj_map: Vec<ConjugationRule>) -> ConjugationList {
+        ConjugationList {
+            set_name,
+            conj_map,
+        }
+    }
+}
+
 // The list of conjugations and name of verb
 impl ConjugationRule {
-    fn new(verb_name: String, conjs: Vec<String>) -> ConjugationRule {
+    pub fn new(verb_name: String, conjs: Vec<String>) -> ConjugationRule {
         ConjugationRule { 
             verb_name,
             conjugations: conjs,
@@ -38,6 +54,10 @@ impl ConjugationRule {
         }
         ConjugationRule::new(verb_n, conj_vec)
     }
+
+    // pub fn conjugate(self, person: Person) -> String {}
+
+    // fn conjugate_with_stem(self, person: Person, stem: String) {}
 }
 impl fmt::Display for ConjugationRule {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
