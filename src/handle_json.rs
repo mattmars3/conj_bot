@@ -12,4 +12,19 @@
     
 */
 
+use std::collections::HashMap;
+use serde::{Serialize, Deserialize};
+use serde_json;
+
+
+/*
+fn serialize(verb_map: ConjugationMap) {
+
+}
+
+fn deserialize() -> ConjugationMap {
+
+}
+
+*/
 

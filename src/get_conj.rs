@@ -1,47 +1,56 @@
-// This creates functionality to determine what 
 
-#[derive(Debug)]
-enum Person {
-    FirstSingular,
-    SecondSingular,
-    ThirdSingular,
-    FirstPlural,
-    SecondPlural,
-    ThirdPlural,
-    Unknown
+// this is where all the conjugation happens
+use serde::{Serialize, Deserialize};
+use crate::get_person::get_input;
+use std::fmt;
+
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ConjugationList {
+    set_name: String,
+    conj_map: Vec<ConjugationRule>,
 }
 
-pub fn run() {
-    let x: Vec<&str> = vec!["yo", "yo y john", "usted"];
-    let f: Vec<Person> = x.into_iter().map(|x| get_person(x)).collect::<Vec<Person>>();
-    f.into_iter().for_each(|x| print!("{:?} ", x));
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ConjugationRule {
+    verb_name: String,
+    conjugations: Vec<String>,
 }
 
-// gets the tense given the pronoun input
-fn get_person(pronoun_input: &str) -> Person {
-    let s: String = pronoun_input.clone().to_lowercase();
-    if s.contains(" y ") {
-        if s.contains("yo") {
-            Person::FirstPlural
-        } else if s.contains("tú") {
-            Person::SecondPlural 
-        } else { 
-            Person::ThirdPlural
+// The list of conjugations and name of verb
+impl ConjugationRule {
+    fn new(verb_name: String, conjs: Vec<String>) -> ConjugationRule {
+        ConjugationRule { 
+            verb_name,
+            conjugations: conjs,
         }
-    } else {
-        if s.eq("yo") {
-            Person::FirstSingular
-        } else if s.eq("tú") {
-            Person::SecondSingular
-        }  else if s.eq("nosotros") {
-            Person::FirstPlural
-        } else if s.eq("vosotros") {
-            Person::SecondPlural
-        } else if s.eq("ustedes") {
-            Person::ThirdPlural
-        } else {
-            Person::ThirdSingular
+    }
+
+    pub fn prompt_new() -> ConjugationRule {
+        print!("Enter verb name: ");
+        std::io::Write::flush(&mut std::io::stdout()).expect("flush failed!");
+        let verb_n: String = get_input();
+        println!("Conjugate {}", verb_n);
+        let mut conj_vec: Vec<String> = vec![];
+        for i in 0..6 {
+            std::io::Write::flush(&mut std::io::stdout()).expect("flush failed!");
+            conj_vec.push(get_input()); 
         }
+        ConjugationRule::new(verb_n, conj_vec)
+    }
+}
+impl fmt::Display for ConjugationRule {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "Verb: {}\nYo: {}\nTu: {}\nUsted: {}\nNosotros: {}\nVosotros: {}\nUstedes: {}",
+               self.verb_name, self.conjugations[0], self.conjugations[1], self.conjugations[2], 
+               self.conjugations[3], self.conjugations[4], self.conjugations[5])
     }
 }
 
+// Person::FirstSingular => write!(f, "First Person Singular"),
+/* 
+ * Struct Conjugation Rule
+ * Struct Set Rules
+ * Json is a group of all of those
+ *
+ * */
