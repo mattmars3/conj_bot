@@ -8,7 +8,7 @@ use std::fmt;
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ConjugationList {
     set_name: String,
-    conj_map: Vec<ConjugationRule>,
+    conj_list: Vec<ConjugationRule>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -22,14 +22,47 @@ impl ConjugationList {
         let v: Vec<ConjugationRule> = vec![];
         ConjugationList {
             set_name: String::from("Test"),
-            conj_map: v,
+            conj_list: v,
         }
     }
-    pub fn new(set_name: String, conj_map: Vec<ConjugationRule>) -> ConjugationList {
+
+    pub fn new(set_name: String, conj_list: Vec<ConjugationRule>) -> ConjugationList {
         ConjugationList {
             set_name,
-            conj_map,
+            conj_list,
         }
+    }
+
+
+    // conjugate
+    pub fn conjugate(self, verb_infinitive: String, person: Person) -> String {
+        // search for exact match         
+        for conj_rule in self.conj_list {
+            if conj_rule.verb_name.eq(verb_infinitive.as_str()) {
+                // conjugate the verb
+            }
+        }
+
+        // search for ending
+        for conj_rule in self.conj_list {
+            // does verb ending match?
+            let verb_len = conj_rule.verb_name.len();
+            let verb_stem: &str = &conj_rule.verb_infinitive[0..verb_len-3];
+            let verb_ending
+            // if yes then make a new conjugation rule
+
+
+            if conj_rule.verb_name.eq(verb_ending) {
+
+                let conjv: Vec<String> = conj_rule.conjugations.into_iter().map().collect();
+                ConjugationRule {
+                    verb_name: verb_infinitive,
+                    conjugations: 
+                }
+            }
+
+        }
+        String::from("");
     }
 }
 
@@ -41,6 +74,34 @@ impl ConjugationRule {
             conjugations: conjs,
         }
     }
+
+    //
+    pub fn conjugate(self, person: Person) -> String {
+        // this function may cause a problem because it might move an owned value so therefore it
+        // is not valid after its use
+        match person {
+            FirstSingular => *self.conjugations.get(0).unwrap(),
+            SecondSingular => *self.conjugations.get(1).unwrap(),
+            ThirdSingular => *self.conjugations.get(2).unwrap(),
+            FirstPlural => *self.conjugations.get(3).unwrap(),
+            SecondPlural => *self.conjugations.get(4).unwrap(),
+            ThirdPlural => *self.conjugations.get(5).unwrap(),
+        }
+    }
+
+    // for use only with a conjugation rule and NOT an actual conjugated verb
+    pub fn conjugate_with_stem(self, person: Person, verb_stem: String) -> String {
+        match person {
+            FirstSingular => verb_stem.push_str(&self.conjugations.get(0).unwrap()),
+            SecondSingular => verb_stem.push_str(&self.conjugations.get(1).unwrap()),
+            ThirdSingular => verb_stem.push_str(&self.conjugations.get(2).unwrap()),
+            FirstPlural => verb_stem.push_str(&self.conjugations.get(3).unwrap()),
+            SecondPlural => verb_stem.push_str(&self.conjugations.get(4).unwrap()),
+            ThirdPlural => verb_stem.push_str(&self.conjugations.get(5).unwrap()),
+            _ => String::from("Unknown Person in conjugate with stem function"),
+        }
+    }
+
 
     pub fn prompt_new() -> ConjugationRule {
         print!("Enter verb name: ");
@@ -54,10 +115,6 @@ impl ConjugationRule {
         }
         ConjugationRule::new(verb_n, conj_vec)
     }
-
-    // pub fn conjugate(self, person: Person) -> String {}
-
-    // fn conjugate_with_stem(self, person: Person, stem: String) {}
 }
 impl fmt::Display for ConjugationRule {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

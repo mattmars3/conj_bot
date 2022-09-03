@@ -2,6 +2,7 @@ use crate::get_person;
 use crate::get_conj::{ConjugationRule, ConjugationList};
 use crate::webd;
 use crate::runscript;
+use crate::handle_json;
 
 
 pub fn eval_arguments() {
@@ -32,15 +33,21 @@ pub fn eval_arguments() {
 fn json_test() {
     let c1 = ConjugationRule::prompt_new();
     let c2 = ConjugationRule::prompt_new();
-    let clist: ConjugationList = ConjugationList::new();
-    handle_json
+    let mut cv: Vec<ConjugationRule> = vec![];
+    cv.push(c1); 
+    cv.push(c2);
+    let clist: ConjugationList = ConjugationList::new("Test".to_string(), cv);
+    let jso = handle_json::serialize(clist);
+
+    let conjli: ConjugationList = handle_json::deserialize(jso);
+    conjli
 }
 
 
 fn conjugation_test() {
     println!("Running conjugation test");
     loop {
-        println!("{}", get_conj::ConjugationRule::prompt_new());
+        println!("{}", ConjugationRule::prompt_new());
     }
 }
 

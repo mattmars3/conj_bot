@@ -1,6 +1,7 @@
 // This creates functionality to determine what person a pronoun input is 
 use std::fmt;
 
+
 #[derive(PartialEq, Debug)]
 pub enum Person {
     FirstSingular,
